@@ -1,1 +1,4 @@
 node_modules
+.gitignore
+public/js/lib
+config.json

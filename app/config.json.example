@@ -1,0 +1,8 @@
+{
+	"channels": ["#channel"],
+	"server": "irc.quakenet.org",
+	"botName": "botName",
+    "realName": "A nodeJS ircbot",
+    "debug": false,
+    "admins": ["nickname!username@host"]
+}
