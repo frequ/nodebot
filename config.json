@@ -1,8 +1,0 @@
-{
-	"channels": ["#hutibotdebug"],
-	"server": "irc.quakenet.org",
-	"botName": "hutibot",
-    "realName": "hutibot",
-    "debug": false,
-    "admins": ["frequ!~frequ@178-75-135-227.bb.dnainternet.fi"]
-}
