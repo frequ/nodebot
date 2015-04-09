@@ -1,0 +1,22 @@
+{
+  "name": "hutibot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "bot.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.12.2",
+    "cheerio": "^0.19.0",
+    "express": "^4.12.3",
+    "fs": "0.0.2",
+    "irc": "^0.3.9",
+    "moment": "^2.9.0",
+    "needle": "^0.9.1",
+    "path": "^0.11.14",
+    "valid-url": "^1.0.9"
+  }
+}

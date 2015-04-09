@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="hutistats">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Hutibot Stats</title>
+
+    <link rel="stylesheet" type="text/css" href="js/lib/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="styles/styles.css">
+
+</head>
+
+<body ng-controller="MainController as MainCtrl">
+
+    <nav class="navbar navbar-inverse navbar-static-top">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">{{channel}}</a>
+            </div>
+
+            <ul class="nav navbar-nav">
+                <li><a ng-class="{ 'active' : view == 'main' }" ng-click="showView('main')" href="#">Stats</a></li>
+                <li><a ng-class="{ 'active' : view == 'live' }" ng-click="showView('live')" href="#">Live</a></li>
+            </div>
+        </div>
+    </nav>
+
+    <main id="content" role="main" ng-cloak>
+
+        <div id="mainView" class="container" ng-init="getAPI()" ng-show="gotData && showMain">
+
+            <div class="alert alert-info" role="alert">
+                Logging started at {{loggingStarted | amDateFormat: 'dddd, MMMM Do YYYY, HH:mm'}}.
+                Which was <span am-time-ago="loggingStarted"></span>.<br/>
+                Statses are generated automatically.
+            </div>
+
+
+            <div class="panel panel-primary">
+                <div class="panel-heading">Most active nicks</div>
+                <div class="panel-body">
+                    <table class="table table-striped stats">
+                        <tr>
+                            <th>#</th>
+                            <th>Nick</th>
+                            <th>Number of lines</th>
+                            <th>Number of words</th>
+                            <th>Words per line</th>
+                            <th>Last message to {{channel}}</th>
+                        </tr>
+                        <tr ng-repeat="user in users">
+                            <td>{{$index + 1}}</td>
+                            <td>{{user.nick}}</td>
+                            <td>{{user.lines}}</td>
+                            <td>{{user.words}}</td>
+                            <td>{{user.wordsPerLine}}</td>
+                            <td><span am-time-ago="user.lastMessage"></span></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <div class="panel panel-primary">
+                <div class="panel-heading">Most active hour of the day</div>
+                <div class="panel-body">
+                    <chart value="statsChart" id="statsChart" class="ng-isolate-scope chart" type="Bar"></chart>
+                </div>
+            </div>
+
+            <div class="panel panel-primary">
+                <div class="panel-heading">Most referenced URLs</div>
+                <div class="panel-body">
+                    <table class="table table-striped urls">
+                        <tr>
+                            <th>#</th>
+                            <th>URL</th>
+                            <th>Number of pastes</th>
+                            <th>First one to paste</th>
+                            <th>When</th>
+                        </tr>
+                        <tr ng-repeat="url in urls[0]">
+                            <td>{{$index + 1}}</td>
+                            <td><a target="_blank" href="{{url.url}}">{{url.url}}</a></td>
+                            <td>{{url.weight}}</td>
+                            <td>{{url.from}}</td>
+                            <td><span am-time-ago="url.date"></span></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+        <div id="liveView" class="container" ng-show="gotData && showLive">
+            here be dragons
+        </div>
+
+        <div ng-hide="gotData" class="alert alert-danger" role="alert">Errorerrörerror. {{error}}</div>
+
+    </main>
+
+
+    <script type="text/javascript" src="js/lib/angular/angular.js"></script>
+    <script type="text/javascript" src="js/app.js"></script>
+    <script type="text/javascript" src="js/lib/Chart.js/Chart.js"></script>
+    <script type="text/javascript" src="js/lib/angular-chartjs-directive/chartjs-directive.js"></script>
+    <script type="text/javascript" src="js/lib/moment/moment.js"></script>
+    <script type="text/javascript" src="js/lib/angular-moment/angular-moment.min.js"></script>
+
+</body>
+</html>
