@@ -51,7 +51,7 @@
                             <th>Words per line</th>
                             <th>Last message to {{channel}}</th>
                         </tr>
-                        <tr ng-repeat="user in users">
+                        <tr ng-repeat="user in users | orderBy: '-lines' | limitTo: limitNicks">
                             <td>{{$index + 1}}</td>
                             <td>{{user.nick}}</td>
                             <td>{{user.lines}}</td>
@@ -60,6 +60,7 @@
                             <td><span am-time-ago="user.lastMessage"></span></td>
                         </tr>
                     </table>
+                    <button ng-show="showMoreNicksButton()" class="btn btn-primary" ng-click="showMoreNicks()">Show more nicks</button>
                 </div>
             </div>
 
@@ -81,7 +82,7 @@
                             <th>First one to paste</th>
                             <th>When</th>
                         </tr>
-                        <tr ng-repeat="url in urls[0]">
+                        <tr ng-repeat="url in urls | limitTo: limitUrls | orderBy: ['-weight','-date']">
                             <td>{{$index + 1}}</td>
                             <td><a target="_blank" href="{{url.url}}">{{url.url}}</a></td>
                             <td>{{url.weight}}</td>
@@ -89,6 +90,7 @@
                             <td><span am-time-ago="url.date"></span></td>
                         </tr>
                     </table>
+                    <button ng-show="showMoreUrlsButton()" class="btn btn-primary" ng-click="showMoreUrls()">Show more urls</button>
                 </div>
             </div>
 

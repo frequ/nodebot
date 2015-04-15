@@ -1,7 +1,8 @@
 var moment = require('moment');
+var needle = require('needle');
 
 module.exports = function(bot, from, to, text, message){
-    
+
     if(typeof global.stats === "undefined"){
         global.stats = {};
     }
@@ -59,28 +60,42 @@ module.exports = function(bot, from, to, text, message){
     for (i = 0; i < wordCount; i++){
 
         if ( urlRegex.test(words[i]) ) {
-            var theUrl = words[i];
-            console.log(words[i], theUrl);
-            //check if url already exists
-            var urlsArray = global.stats[channel].urls;
-            var existsInArray = urlLookup(theUrl, urlsArray);
 
-            if( !existsInArray ){
-                urlsArray.push( {
-                    'url': theUrl,
-                    'weight': 1,
-                    'from': from,
-                    'date': now });
+            var options = {
+                follow_max: 2,
+                headers: {
+                    'User-Agent': "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/32.0.1677.0 Safari/537.36"
+                }
+            };
 
-            }else{
-                bot.say(to, "WANHA! " + existsInArray.from +" sano tän jo "+ existsInArray.date.format('D.M.YYYY HH:mm'));
-                //increase weight
-                existsInArray.weight++;
-                break;
-            }
+            var url = words[i];
+
+            needle.get(url, options, function(err, res, body) {
+
+                if (!err && res.statusCode == 200) {
+
+                    //check if url already exists
+                    var urlsArray = global.stats[channel].urls;
+                    var existsInArray = urlLookup(url, urlsArray);
+
+                    if( !existsInArray ){
+                        urlsArray.push({
+                            'url': url,
+                            'weight': 1,
+                            'from': from,
+                            'date': now
+                        });
+
+                    }else{
+                        bot.say(to, "WANHA! " + existsInArray.from +" sano tän jo "+ existsInArray.date.format('D.M.YYYY HH:mm'));
+                        //increase weight
+                        existsInArray.weight++;
+                        return;
+                    }
+                }else{
+                    bot.say(to, "Is that even url?");
+                }
+            });
         }
     }
-    //console.log('channel', global.stats[channel]);
-    //console.log('times',global.stats[channel].times);
-    //console.log('urls',global.stats[channel].urls);
 };

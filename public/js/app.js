@@ -11,9 +11,39 @@
             datasets: []
         };
 
+        $scope.users = [];
+        $scope.urls = [];
+
         $scope.view = 'main';
         $scope.showMain = true;
         $scope.showLive = false;
+
+        $scope.limitNicks = 5;
+        $scope.limitUrls = 5;
+
+        $scope.showMoreNicksButton = function(){
+            if( $scope.users.length > $scope.limitNicks ){
+                return true;
+            }else{
+                return false;
+            }
+        };
+
+        $scope.showMoreUrlsButton = function(){
+            if( $scope.urls.length > $scope.limitUrls ){
+                return true;
+            }else{
+                return false;
+            }
+        };
+
+        $scope.showMoreNicks = function(){
+            $scope.limitNicks = $scope.limitNicks + 5;
+        };
+
+        $scope.showMoreUrls = function(){
+            $scope.limitUrls = $scope.limitUrls + 5;
+        };
 
         $scope.showView = function(view){
             $scope.view = view;
@@ -34,8 +64,7 @@
                 $log.info('got data from api', data);
                 var channels = data;
 
-                $scope.users = [];
-                $scope.urls = [];
+
                 var times = [];
                 if (Object.keys(data).length !== 0){
                     $scope.gotData = true;
@@ -72,6 +101,8 @@
                                 }
                             }
                         }
+
+                        $scope.urls = $scope.urls[0];
                     }
                 }else{
                     $scope.gotData = false;
