@@ -27,7 +27,7 @@ module.exports = function(bot, from, to, text, message, callback) {
 
                 if (!err && res.statusCode == 200) {
                     var $ = cheerio.load(body);
-                    var title = $('title').text().trim();
+                    var title = $('title').text().trim().replace(/(\r\n|\n|\r)/gm,"");
                     callback(title);
                 }
 
